@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<submission id=""> <!-- beliebige ID, wird vom LMS/Middleware vergeben !PFLICHT! -->
+        <student-submission>
+                <text></text>
+                        <!--      ODER -->
+                <files>
+                <file mimetype="">base64</file>
+</files>
+        </student-submission>
+        <task>
+                <external-task uuid="">URI</external-task> <!-- uuid ist optional , Wie sieht eine URI zu einem Repository aus, ggf. ein Pfad innerhalb einer ZIP? URL-> einfache Fall, was gibt es noch?-->
+                          <!--      ODER -->
+                 <inline-task-file namespace="urn:proforma:task:v1.1"></inline-task-file>
+              <!-- ODER -->
+<inline-task-zip mimetype="zip">base64</inline-task-zip>                              
+        </task>
+        <lms-information lms-url=""> <!--  ggf. nicht notwendig -->
+            <user-id></user-id>  <!-- beliebige ID, wird vom LMSvergeben !optional!-->
+            <course-id></course-id>  <!-- beliebige ID, wird vom LMSvergeben !optional! -->
+            <submission-datetime></submission-datetime>
+            <##other>                        
+        </lms-information>
+</submission>
