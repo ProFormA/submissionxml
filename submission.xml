@@ -1,23 +1,143 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<submission id=""> <!-- beliebige ID, wird vom LMS/Middleware vergeben !PFLICHT! -->
-        <student-submission>
-                <text></text>
-                        <!--      ODER -->
-                <files>
-                <file mimetype="">base64</file>
-</files>
-        </student-submission>
-        <task>
-                <external-task uuid="">URI</external-task> <!-- uuid ist optional , Wie sieht eine URI zu einem Repository aus, ggf. ein Pfad innerhalb einer ZIP? URL-> einfache Fall, was gibt es noch?-->
-                          <!--      ODER -->
-                 <inline-task-file namespace="urn:proforma:task:v1.1"></inline-task-file>
-              <!-- ODER -->
-<inline-task-zip mimetype="zip">base64</inline-task-zip>                              
-        </task>
-        <lms-information lms-url=""> <!--  ggf. nicht notwendig -->
-            <user-id></user-id>  <!-- beliebige ID, wird vom LMSvergeben !optional!-->
-            <course-id></course-id>  <!-- beliebige ID, wird vom LMSvergeben !optional! -->
-            <submission-datetime></submission-datetime>
-            <##other>                        
-        </lms-information>
-</submission>
+<urn:submission xmlns:urn="urn:proforma:submission:v0.1" xmlns:urn1="urn:proforma:task:v1.1" xmlns:urn2="urn:proforma:grades:v0.7">
+  <urn:student-submission>
+    <!--You have a CHOICE of the next 2 items at this level-->
+    <urn:text>string</urn:text>
+    <urn:files>
+      <!--1 or more repetitions:-->
+      <urn:file mimetype="string">
+        <!--You have a CHOICE of the next 2 items at this level-->
+        <urn:embedded-file filename="string" is-base64-encoded="false">string</urn:embedded-file>
+        <urn:attached-file encoding="string" submissionNaturalLanguage="string">string</urn:attached-file>
+      </urn:file>
+    </urn:files>
+  </urn:student-submission>
+  <urn:task>
+    <!--You have a CHOICE of the next 3 items at this level-->
+    <urn:external-task uuid="string">string</urn:external-task>
+    <urn1:task uuid="string" parent-uuid="string" lang="string">
+      <urn1:description>string</urn1:description>
+      <urn1:proglang version="string">string</urn1:proglang>
+      <urn1:submission-restrictions>
+        <!--You have a CHOICE of the next 3 items at this level-->
+        <urn1:archive-restriction max-size="201" mime-type-regexp="string" allowed-archive-filename-regexp="string">
+          <!--You have a CHOICE of the next 2 items at this level-->
+          <urn1:unpack-files-from-archive-regexp>string</urn1:unpack-files-from-archive-regexp>
+          <urn1:file-restrictions>
+            <!--You have a CHOICE of the next 2 items at this level-->
+            <urn1:required mime-type-regexp="string" path="anySimpleType"/>
+            <urn1:optional mime-type-regexp="string" path="anySimpleType"/>
+          </urn1:file-restrictions>
+        </urn1:archive-restriction>
+        <urn1:files-restriction>
+          <!--You have a CHOICE of the next 2 items at this level-->
+          <urn1:required mime-type-regexp="string" max-size="201" filename="anySimpleType"/>
+          <urn1:optional mime-type-regexp="string" max-size="201" filename="anySimpleType"/>
+        </urn1:files-restriction>
+        <urn1:regexp-restriction max-size="201" mime-type-regexp="string">string</urn1:regexp-restriction>
+      </urn1:submission-restrictions>
+      <urn1:files>
+        <urn1:file id="string" filename="string" comment="string" class="instruction" type="embedded">string</urn1:file>
+      </urn1:files>
+      <!--Optional:-->
+      <urn1:external-resources>
+        <urn1:external-resource id="string" reference="string">
+          <!--Optional:-->
+          <urn1:description>string</urn1:description>
+          <!--You may enter ANY elements at this point-->
+          <AnyElement/>
+        </urn1:external-resource>
+      </urn1:external-resources>
+      <urn1:model-solutions>
+        <urn1:model-solution id="string" comment="string">
+          <urn1:filerefs>
+            <urn1:fileref refid="string"/>
+          </urn1:filerefs>
+        </urn1:model-solution>
+      </urn1:model-solutions>
+      <urn1:tests>
+        <urn1:test id="string" validity="1.00">
+          <urn1:title>string</urn1:title>
+          <urn1:test-type>string</urn1:test-type>
+          <urn1:test-configuration>
+            <!--Optional:-->
+            <urn1:filerefs>
+              <urn1:fileref refid="string"/>
+            </urn1:filerefs>
+            <!--Optional:-->
+            <urn1:timeout>201</urn1:timeout>
+            <!--Optional:-->
+            <urn1:externalresourcerefs>
+              <urn1:externalresourceref refid="string"/>
+            </urn1:externalresourcerefs>
+            <!--You may enter ANY elements at this point-->
+            <AnyElement/>
+            <!--Optional:-->
+            <urn1:test-meta-data>
+              <!--You may enter ANY elements at this point-->
+              <AnyElement/>
+            </urn1:test-meta-data>
+          </urn1:test-configuration>
+        </urn1:test>
+      </urn1:tests>
+      <!--Optional:-->
+      <urn1:grading-hints>
+        <!--You may enter ANY elements at this point-->
+        <AnyElement/>
+      </urn1:grading-hints>
+      <urn1:meta-data>
+        <urn1:title>string</urn1:title>
+        <!--You may enter ANY elements at this point-->
+        <AnyElement/>
+      </urn1:meta-data>
+    </urn1:task>
+    <urn:inline-task-zip mimetype="string">string</urn:inline-task-zip>
+  </urn:task>
+  <!--Optional:-->
+  <urn:lms url="string">
+    <urn:submission-datetime>2007-10-26T08:36:28</urn:submission-datetime>
+    <!--Optional:-->
+    <urn:user-id>string</urn:user-id>
+    <!--Optional:-->
+    <urn:course-id>string</urn:course-id>
+    <!--You may enter ANY elements at this point-->
+    <AnyElement/>
+  </urn:lms>
+  <urn:result-spec format="xml">
+    <urn:feedback-spec structure="merged-test-feedback">
+      <!--Optional:-->
+      <urn:student-level>info</urn:student-level>
+      <!--Optional:-->
+      <urn:teacher-level>warn</urn:teacher-level>
+    </urn:feedback-spec>
+  </urn:result-spec>
+  <!--Optional:-->
+  <urn2:grading-hints>
+    <urn2:root id="string" function="mult">
+      <!--Optional:-->
+      <urn2:displaytitle>string</urn2:displaytitle>
+      <!--Optional:-->
+      <urn2:description>string</urn2:description>
+      <!--Optional:-->
+      <urn2:internal-description>string</urn2:internal-description>
+      <!--You have a CHOICE of the next 3 items at this level-->
+      <urn2:test-ref ref="string" weight="1.051732E7" nature="cross"/>
+      <urn2:combine-ref ref="string" weight="1.051732E7" nature="tree"/>
+      <urn2:double-value-ref ref="string" weight="1.051732E7" nature="tree"/>
+    </urn2:root>
+    <!--Zero or more repetitions:-->
+    <urn2:combine id="string" function="avg">
+      <!--Optional:-->
+      <urn2:displaytitle>string</urn2:displaytitle>
+      <!--Optional:-->
+      <urn2:description>string</urn2:description>
+      <!--Optional:-->
+      <urn2:internal-description>string</urn2:internal-description>
+      <!--You have a CHOICE of the next 3 items at this level-->
+      <urn2:test-ref ref="string" weight="1.051732E7" nature="tree"/>
+      <urn2:combine-ref ref="string" weight="1.051732E7" nature="cross"/>
+      <urn2:double-value-ref ref="string" weight="1.051732E7" nature="cross"/>
+    </urn2:combine>
+    <!--You may enter ANY elements at this point-->
+    <AnyElement/>
+  </urn2:grading-hints>
+</urn:submission>

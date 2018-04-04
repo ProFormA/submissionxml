@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified" targetNamespace="urn:proforma:submission:v0.1"
+           xmlns:tns="urn:proforma:submission:v0.1"
+           xmlns:gh="urn:proforma:grades:v0.7"
+           xmlns:task="urn:proforma:task:v1.1">
+
+    <xs:import namespace="urn:proforma:grades:v0.7" schemaLocation="proforma-grades.xsd" />
+    <xs:import namespace="urn:proforma:task:v1.1" schemaLocation="taskxml.xsd" />
+    
+    <xs:element name="submission">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="student-submission" type="tns:student-submission" />
+                <xs:element name="task" type="tns:task" />
+                <xs:element name="lms" type="tns:lms" minOccurs="0" />
+                <!-- optional or required? -->
+                <xs:element name="result-spec" type="tns:result-spec" />
+                <xs:element ref="gh:grading-hints" minOccurs="0" />
+                <!-- Using the grading-hints element at this point is optional.
+                     If it is used, it must be preferred over the grading-hints
+                     in the task element. -->
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="student-submission">
+        <xs:choice>
+            <xs:element name="text" type="xs:string" />
+            <xs:element name="files" type="tns:files" />
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType name="files">
+        <xs:sequence>
+            <xs:element name="file" maxOccurs="unbounded" type="tns:file" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="file">
+        <xs:choice>
+            <xs:element name="embedded-file" type="tns:embedded-file" />
+            <xs:element name="attached-file" type="tns:attached-file" />
+        </xs:choice>
+        <xs:attribute name="mimetype" type="xs:string" use="optional" />
+    </xs:complexType>
+
+    <xs:complexType name="embedded-file">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="filename" type="xs:string"
+                              use="required" />
+                <xs:attribute name="is-base64-encoded" type="xs:boolean"
+                              default="false" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="attached-file">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="encoding" type="xs:string" />
+                <xs:attribute name="submissionNaturalLanguage" type="xs:string" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>    
+
+    <xs:complexType name="task">
+        <xs:choice>
+            <xs:element name="external-task" type="tns:external-task" />
+            <xs:element ref="task:task" />            
+            <xs:element name="inline-task-zip" type="tns:inline-task-zip" />
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType name="external-task">
+        <!-- The element content stores the URI of the repository the
+             task is located at. -->
+        <!-- uuid ist optional , Wie sieht eine URI zu einem Repository aus, ggf. ein Pfad innerhalb einer ZIP? URL-> einfacher Fall, was gibt es noch? -->
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="uuid" type="xs:string"
+                              use="optional" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="inline-task-zip">
+        <!-- The content of inline-task-zip must be encoded to base64. -->
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="mimetype" type="xs:string" use="optional" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="lms">
+        <xs:sequence>
+            <xs:element name="submission-datetime" type="xs:dateTime" />
+
+            <xs:element name="user-id" type="xs:string" minOccurs="0" />
+            <!-- beliebige ID, wird vom LMS vergeben !optional! -->
+
+            <xs:element name="course-id" type="xs:string" minOccurs="0" />
+            <!-- beliebige ID, wird vom LMS vergeben !optional! -->
+
+            <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"
+                    processContents="lax" />
+        </xs:sequence>
+        <xs:attribute name="url" type="xs:string" use="optional" />
+    </xs:complexType>
+
+    <xs:complexType name="result-spec">
+        <xs:sequence>
+            <xs:element name="feedback-spec" type="tns:feedback-spec" />
+        </xs:sequence>
+        <xs:attribute name="format" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="xml" />
+                    <xs:enumeration value="zip" />
+                </xs:restriction>
+            </xs:simpleType>
+       </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="feedback-spec">
+        <xs:sequence>
+            <xs:element name="student-level" type="tns:feedback-level" minOccurs="0" />
+            <xs:element name="teacher-level" type="tns:feedback-level" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute name="structure" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="merged-test-feedback" />
+                    <xs:enumeration value="separate-test-feedback" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:simpleType name="feedback-level">
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="debug" />
+                <xs:enumeration value="info" />
+                <xs:enumeration value="warn" />
+                <xs:enumeration value="error" />                
+            </xs:restriction>
+    </xs:simpleType>    
+</xs:schema>
